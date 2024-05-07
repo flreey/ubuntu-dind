@@ -2,9 +2,23 @@ FROM ubuntu:22.04
 
 RUN apt update \
     && apt install -y ca-certificates \
-    wget curl iptables supervisor \
+    wget curl iptables supervisor vim sudo git \
     && rm -rf /var/lib/apt/list/* \
     && update-alternatives --set iptables /usr/sbin/iptables-legacy
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+# Source Rust environment variables
+RUN echo "source $HOME/.cargo/env" >> $HOME/.bashrc
+
+# 下载并安装指定版本的Golang
+RUN wget https://go.dev/dl/go1.22.2.linux-amd64.tar.gz \
+    && tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz \
+    && rm go1.22.2.linux-amd64.tar.gz
+
+# 设置环境变量
+RUN echo "PATH=$PATH:/usr/local/go/bin" >> $HOME/.bashrc
+ENV PATH=$PATH:/usr/local/go/bin
+
 
 ENV DOCKER_CHANNEL=stable \
 	DOCKER_VERSION=26.0.1 \
