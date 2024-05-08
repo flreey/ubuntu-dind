@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 RUN apt update \
     && apt install -y ca-certificates \
-    wget curl iptables supervisor vim sudo git make \
+    wget curl iptables supervisor vim sudo git make gcc\
     && rm -rf /var/lib/apt/list/* \
     && update-alternatives --set iptables /usr/sbin/iptables-legacy
 
